@@ -2,12 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#B5CD2E">
+        android:background="#2E8DCD">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
