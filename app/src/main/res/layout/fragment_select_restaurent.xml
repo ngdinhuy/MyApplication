@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewmodel"
+            type="com.example.myapplication.ui.select_restaurant.SelectRestaurantViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#CD2E2E">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please select a meal" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_select"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> viewmodel.clickSelectrestaurant()}">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="---"
+                android:text="@{viewmodel.restaurant}"
+                android:textSize="16sp"
+                android:paddingVertical="5dp"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="start"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/arrow_up_24"
+                android:rotation="180"
+                android:layout_marginEnd="16dp"
+                android:layout_gravity="end|center"/>
+        </FrameLayout>
+
+    </LinearLayout>
 </layout>

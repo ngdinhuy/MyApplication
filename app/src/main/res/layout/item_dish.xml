@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="viewmodel"
-            type="com.example.myapplication.ui.select_meal.SelectMealViewModel" />
+
     </data>
 
     <LinearLayout
@@ -20,28 +17,29 @@
             android:text="Please select a meal" />
 
         <FrameLayout
+            android:id="@+id/fl_select_dish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_select"
             android:layout_marginTop="10dp"
-            android:onClick="@{() -> viewmodel.clickSelectMeal()}">
+            android:background="@drawable/bg_select">
+
             <TextView
+                android:id="@+id/tv_dish"
+                tools:text="---"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="---"
-                android:text="@{viewmodel.meal}"
-                android:textSize="16sp"
-                android:paddingVertical="5dp"
+                android:layout_gravity="start"
                 android:layout_marginStart="16dp"
-                android:layout_gravity="start"/>
+                android:paddingVertical="5dp"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/arrow_up_24"
-                android:rotation="180"
+                android:layout_gravity="end|center"
                 android:layout_marginEnd="16dp"
-                android:layout_gravity="end|center"/>
+                android:rotation="180"
+                android:src="@drawable/arrow_up_24" />
         </FrameLayout>
 
         <TextView
@@ -51,36 +49,38 @@
             android:text="Please enter number of people" />
 
         <FrameLayout
+            android:id="@+id/fl_select_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_select"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_select">
+
             <TextView
+                android:id="@+id/tv_number"
+                tools:text="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="1"
-                android:text="@{String.valueOf(viewmodel.numberCustomer)}"
-                android:textSize="16sp"
-                android:paddingVertical="5dp"
-                android:layout_marginStart="16dp"
                 android:layout_gravity="start"
-                />
+                android:layout_marginStart="16dp"
+                android:paddingVertical="5dp"
+                android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/iv_up"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/arrow_up_24"
-                android:layout_marginEnd="16dp"
                 android:layout_gravity="end|top"
-                android:onClick="@{() -> viewmodel.clickUpButton()}"/>
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/arrow_up_24" />
+
             <ImageView
+                android:id="@+id/iv_down"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/arrow_up_24"
+                android:layout_gravity="end|bottom"
                 android:layout_marginEnd="16dp"
                 android:rotation="180"
-                android:layout_gravity="end|bottom"
-                android:onClick="@{() -> viewmodel.clickDownButton()}"/>
+                android:src="@drawable/arrow_up_24" />
         </FrameLayout>
 
     </LinearLayout>

@@ -1,13 +1,16 @@
 package com.example.myapplication.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.myapplication.R
+import com.example.myapplication.data.Dish
 import com.example.myapplication.databinding.FragmentMainBinding
 import com.example.myapplication.ui.review.ReviewFragment
 import com.example.myapplication.ui.select_disk.SelectDishFragment
@@ -15,12 +18,19 @@ import com.example.myapplication.ui.select_meal.SelectMealFragment
 import com.example.myapplication.ui.select_restaurant.SelectRestaurantFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     val viewmodel by viewModels<MainViewmodel>()
     lateinit var databinding: FragmentMainBinding
+    val listFragment = mutableListOf<Fragment>()
+    val adapter by lazy {
+        PagerAdapter(listFragment, childFragmentManager, lifecycle)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,17 +45,18 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        convertDataJsonToDish()
         setUpViewPager()
+        setUpEvent()
     }
 
     private fun setUpViewPager() {
-        val listFragment = mutableListOf<Fragment>()
         listFragment.add(SelectMealFragment())
         listFragment.add(SelectRestaurantFragment())
         listFragment.add(SelectDishFragment())
         listFragment.add(ReviewFragment())
-        val adapter = PagerAdapter(listFragment, childFragmentManager, lifecycle)
 
+        viewmodel.maxTab = listFragment.size
         databinding.viewpage2.adapter = adapter
         TabLayoutMediator(databinding.tablayout, databinding.viewpage2) { tab, pos ->
             tab.setCustomView(R.layout.custom_tablayout)
@@ -73,4 +84,29 @@ class MainFragment : Fragment() {
 
         })
     }
+
+    private fun setUpEvent() {
+        viewmodel.currentTab.observe(viewLifecycleOwner, Observer {
+            databinding.viewpage2.setCurrentItem(it, true)
+        })
+    }
+
+    private fun convertDataJsonToDish() {
+        try {
+            activity?.let {
+                val inputStream = it.assets.open("dishes.json")
+                val size: Int = inputStream.available()
+                val buffer = ByteArray(size)
+                inputStream.read(buffer)
+                inputStream.close()
+                val myJson = String(buffer, charset("UTF-8"))
+                viewmodel.listDisk =
+                    Gson().fromJson(myJson, object : TypeToken<List<Dish>>() {}.type)
+                Log.e("SIZEEEE", viewmodel.listDisk.size.toString())
+            }
+        } catch (e: Exception) {
+            Log.e("Error", e.message.toString())
+        }
+    }
+
 }

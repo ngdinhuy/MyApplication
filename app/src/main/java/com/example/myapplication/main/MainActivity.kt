@@ -21,20 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         databinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(databinding.root)
-        convertDataJsonToDish()
     }
 
-    fun convertDataJsonToDish() {
-        try {
-            val inputStream = this.assets.open("dishes.json")
-            val size: Int = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            val myJson = String(buffer, charset("UTF-8"))
-            listDisk = Gson().fromJson(myJson,object : TypeToken<List<Dish>>(){}.type)
-        } catch (e: Exception) {
-            Log.e("Error", e.message.toString())
-        }
-    }
+
 }

@@ -17,13 +17,40 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="20dp"
             />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpage2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tablayout"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tablayout" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/viewpage2"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Previous"
+                android:background="@drawable/bg_btn_previous"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="40dp"
+                android:onClick="@{() -> viewmodel.clickPrevious()}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="40dp"
+                android:layout_gravity="end"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_btn_next"
+                android:onClick="@{() -> viewmodel.clickNext()}"/>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
