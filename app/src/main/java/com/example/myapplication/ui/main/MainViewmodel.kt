@@ -18,22 +18,28 @@ class MainViewmodel @Inject constructor(
 
     var listDisk = listOf<Dish>()
     var maxTab = 0
-    private val _currentTab = MutableLiveData(0)
+    var tab = 0
+    private val _currentTab = MutableLiveData(tab)
     val currentTab: LiveData<Int> = _currentTab
 
     var numberCustomer = 0
     var meal = ""
     var restaurant = ""
+    var listDish = mutableListOf<Pair<String, Int>>()
+
+    fun updateCurrentTab(currentTab: Int){
+        tab = currentTab
+    }
 
     fun clickNext() {
         if ((_currentTab.value ?: 0) < maxTab) {
-            _currentTab.value = (_currentTab.value ?: 0) + 1
+            _currentTab.value = tab + 1
         }
     }
 
     fun clickPrevious() {
-        if ((_currentTab.value ?: 0) > 0) {
-            _currentTab.value = (_currentTab.value ?: 0) - 1
+        if (tab > 0) {
+            _currentTab.value = tab - 1
         }
     }
 }

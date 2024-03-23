@@ -6,13 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentReviewBinding
+import com.example.myapplication.ui.main.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ReviewFragment : Fragment() {
     val viewmodel by viewModels<ReviewViewModel> ()
     lateinit var databinding : FragmentReviewBinding
+    val parentViewmodel by viewModels<MainViewmodel>(ownerProducer = { requireParentFragment() })
+    val mAdapter : ReviewAdapter by lazy {
+        ReviewAdapter(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,7 +27,34 @@ class ReviewFragment : Fragment() {
     ): View? {
         databinding = FragmentReviewBinding.inflate(layoutInflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+            viewmodel = this@ReviewFragment.viewmodel.apply {
+                mainViewmodel = parentViewmodel
+                setData()
+            }
         }
         return databinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpRecycleview()
+        viewmodel.listDish.observe(viewLifecycleOwner, Observer {
+            mAdapter.submitList(it)
+            mAdapter.notifyDataSetChanged()
+        })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewmodel.setData()
+        databinding.root.requestLayout()
+    }
+
+    fun setUpRecycleview(){
+        databinding.rvDish.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 }

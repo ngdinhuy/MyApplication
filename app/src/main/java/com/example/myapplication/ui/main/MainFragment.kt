@@ -71,6 +71,16 @@ class MainFragment : Fragment() {
                 val tvCounter = tab?.customView?.findViewById<TextView>(R.id.tvCounter)
                 tvCounter?.isSelected = true
                 tvCounter?.setTextColor(resources.getColor(R.color.white))
+                viewmodel.updateCurrentTab(tab?.position?:0)
+
+                if(tab?.position == 0) {
+                    databinding.tvPrevious.visibility = View.GONE
+                } else if (tab?.position == listFragment.size - 1) {
+                    databinding.tvNext.text = "Submit"
+                } else {
+                    databinding.tvPrevious.visibility = View.VISIBLE
+                    databinding.tvNext.text = "Next"
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {

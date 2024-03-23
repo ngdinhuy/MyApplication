@@ -52,4 +52,9 @@ class SelectMealFragment : Fragment() {
             }.show(requireFragmentManager(), "")
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        databinding.root.requestLayout()
+    }
 }

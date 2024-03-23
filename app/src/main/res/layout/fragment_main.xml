@@ -17,13 +17,14 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="40dp"
-            android:layout_marginHorizontal="20dp"
             />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpage2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintTop_toBottomOf="@id/tablayout" />
 
         <FrameLayout
@@ -33,15 +34,18 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp">
             <TextView
+                android:id="@+id/tv_previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Previous"
                 android:background="@drawable/bg_btn_previous"
                 android:paddingVertical="10dp"
                 android:paddingHorizontal="40dp"
-                android:onClick="@{() -> viewmodel.clickPrevious()}"/>
+                android:visibility="gone"
+                android:onClick="@{() -> viewmodel.clickPrevious()}" />
 
             <TextView
+                android:id="@+id/tv_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Next"

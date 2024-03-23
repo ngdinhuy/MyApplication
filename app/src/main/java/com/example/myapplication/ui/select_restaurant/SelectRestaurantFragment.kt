@@ -45,9 +45,13 @@ class SelectRestaurantFragment : Fragment() {
                     override fun clickOk(text: String) {
                         viewmodel.updateRestaurant(text)
                     }
-
                 }
             }.show(requireFragmentManager(), "")
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        databinding.root.requestLayout()
     }
 }
