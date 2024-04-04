@@ -41,7 +41,7 @@
                 android:background="@drawable/bg_btn_previous"
                 android:paddingVertical="10dp"
                 android:paddingHorizontal="40dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:onClick="@{() -> viewmodel.clickPrevious()}" />
 
             <TextView

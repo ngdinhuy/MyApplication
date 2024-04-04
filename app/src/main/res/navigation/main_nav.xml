@@ -10,4 +10,10 @@
         android:name="com.example.myapplication.ui.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main"/>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.myapplication.ui.splash.SplashFragment"
+        android:label="SplashFragment" />
+
+
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.lifecycle.Observer
 import com.example.myapplication.R
 import com.example.myapplication.data.Dish
 import com.example.myapplication.databinding.FragmentMainBinding
+import com.example.myapplication.service.MediaService
 import com.example.myapplication.ui.review.ReviewFragment
 import com.example.myapplication.ui.select_disk.SelectDishFragment
 import com.example.myapplication.ui.select_meal.SelectMealFragment
@@ -74,7 +76,7 @@ class MainFragment : Fragment() {
                 viewmodel.updateCurrentTab(tab?.position?:0)
 
                 if(tab?.position == 0) {
-                    databinding.tvPrevious.visibility = View.GONE
+//                    databinding.tvPrevious.visibility = View.GONE
                 } else if (tab?.position == listFragment.size - 1) {
                     databinding.tvNext.text = "Submit"
                 } else {
@@ -98,6 +100,15 @@ class MainFragment : Fragment() {
     private fun setUpEvent() {
         viewmodel.currentTab.observe(viewLifecycleOwner, Observer {
             databinding.viewpage2.setCurrentItem(it, true)
+        })
+
+        viewmodel.currentSong.observe(viewLifecycleOwner, Observer{
+            Intent(requireContext(), MediaService::class.java).apply {
+                val bundle = Bundle()
+                bundle.putSerializable("NEW_SONG", viewmodel.listSong[it])
+               putExtras(bundle)
+                activity?.startService(this)
+            }
         })
     }
 

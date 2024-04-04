@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @ApplicationContext val context: Context,
+//    @ApplicationContext val context: Context,
 ): ViewModel() {
 }
