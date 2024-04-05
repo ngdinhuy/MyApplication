@@ -60,6 +60,11 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.7.7")
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
+
+    implementation ("androidx.media3:media3-exoplayer:1.3.0")
+    implementation ("androidx.media3:media3-ui:1.3.0")
+    implementation ("androidx.media3:media3-common:1.3.0")
+    implementation ("androidx.media3:media3-session:1.3.0")
 }
 
 kapt {
