@@ -106,7 +106,7 @@ class MainFragment : Fragment() {
             Intent(requireContext(), MediaService::class.java).apply {
                 val bundle = Bundle()
                 bundle.putSerializable("NEW_SONG", viewmodel.listSong[it])
-               putExtras(bundle)
+                putExtras(bundle)
                 activity?.startService(this)
             }
         })

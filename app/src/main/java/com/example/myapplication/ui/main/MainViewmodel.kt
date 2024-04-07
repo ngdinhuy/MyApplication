@@ -31,27 +31,54 @@ class MainViewmodel @Inject constructor(
 
     val listSong = mutableListOf<Song>()
     val currentSong = MutableLiveData<Int>()
+    var posSong = -1
 
     init {
-        listSong.add(Song("Crimmal","https://www.youtube.com/results?search_query=crimmal", "Britney SPears"))
-        listSong.add(Song("Đánh Cắp Mặt Trời","https://www.youtube.com/watch?v=yz7dyDJdmJk", "Nhiều ca sĩ"))
-        listSong.add(Song("Đào Hoa Nặc","https://www.youtube.com/watch?v=V26j5u15Dk0&list=RDV26j5u15Dk0&start_radio=1", "Đặng Tử Kỳ"))
-        listSong.add(Song("Váy Cưới Của Em Giống Như Bông Tuyết","https://www.youtube.com/watch?v=Sz_Ms84YzTU&list=RDV26j5u15Dk0&index=2", "Lý Phát Phát "))
+        listSong.add(
+            Song(
+                "Crimmal",
+                "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3",
+                "Britney SPears"
+            )
+        )
+        listSong.add(
+            Song(
+                "Đánh Cắp Mặt Trời",
+                "https://storage.googleapis.com/exoplayer-test-media-0/play.mp3",
+                "Nhiều ca sĩ"
+            )
+        )
+        listSong.add(
+            Song(
+                "Đào Hoa Nặc",
+                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                "Đặng Tử Kỳ"
+            )
+        )
+        listSong.add(
+            Song(
+                "Váy Cưới Của Em Giống Như Bông Tuyết",
+                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                "Lý Phát Phát "
+            )
+        )
     }
 
-    fun updateCurrentTab(currentTab: Int){
+    fun updateCurrentTab(currentTab: Int) {
         tab = currentTab
     }
 
     fun clickNext() {
-        if ((currentSong.value ?: 0) < listSong.size - 1) {
-            currentSong.value = tab + 1
+        if (posSong < listSong.size - 1) {
+            currentSong.value = posSong + 1
+            posSong++
         }
     }
 
     fun clickPrevious() {
-        if ((currentSong.value ?: 0) > 0) {
-            currentSong.value = tab - 1
+        if (posSong > 0) {
+            currentSong.value = posSong - 1
+            posSong--
         }
     }
 }

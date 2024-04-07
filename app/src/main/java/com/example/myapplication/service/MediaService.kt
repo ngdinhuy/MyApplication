@@ -3,10 +3,8 @@ package com.example.myapplication.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -14,7 +12,6 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -43,7 +40,8 @@ class MediaService() : MediaSessionService() {
             .build()
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = mediaSession
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
+        mediaSession
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -56,7 +54,8 @@ class MediaService() : MediaSessionService() {
         }
         Log.e("Songggg", song.toString())
         song?.link?.let {
-            playMusic(" https://storage.googleapis.com/exoplayer-test-media-0/play.mp3")
+            playMusic(it)
+//            playMusic("https://storage.googleapis.com/exoplayer-test-media-0/play.mp3")
         }
         song?.let {
             sendNotifcation(it)
@@ -117,7 +116,6 @@ class MediaService() : MediaSessionService() {
         val remoteView = RemoteViews(packageName, R.layout.layout_notification)
         remoteView.setTextViewText(R.id.tv_name, song.name)
         remoteView.setTextViewText(R.id.tv_author, song.author)
-
 
         // Sử dụng NotificationCompat.Builder để set noi dung cho notification
         var builder = NotificationCompat.Builder(this, Define.CHANNEL_ID)
