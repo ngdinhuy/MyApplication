@@ -7,31 +7,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.data.Dish
 import com.example.myapplication.databinding.FragmentMainBinding
 import com.example.myapplication.service.MediaService
+import com.example.myapplication.ui.FragmentLifecycle
 import com.example.myapplication.ui.review.ReviewFragment
 import com.example.myapplication.ui.select_disk.SelectDishFragment
 import com.example.myapplication.ui.select_meal.SelectMealFragment
 import com.example.myapplication.ui.select_restaurant.SelectRestaurantFragment
+import com.google.android.gms.common.api.internal.LifecycleFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     val viewmodel by viewModels<MainViewmodel>()
     lateinit var databinding: FragmentMainBinding
     val listFragment = mutableListOf<Fragment>()
+    val listFragment1 = mutableListOf<Fragment>()
+
     val adapter by lazy {
         PagerAdapter(listFragment, childFragmentManager, lifecycle)
     }
+    val adapter1 by lazy {
+        PagerAdapter1(listFragment1, childFragmentManager)
+    }
+    var currentPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +71,11 @@ class MainFragment : Fragment() {
         listFragment.add(SelectDishFragment())
         listFragment.add(ReviewFragment())
 
+//        listFragment1.add(SelectMealFragment())
+//        listFragment1.add(SelectRestaurantFragment())
+//        listFragment1.add(SelectDishFragment())
+//        listFragment1.add(ReviewFragment())
+
         viewmodel.maxTab = listFragment.size
         databinding.viewpage2.adapter = adapter
         TabLayoutMediator(databinding.tablayout, databinding.viewpage2) { tab, pos ->
@@ -67,21 +85,41 @@ class MainFragment : Fragment() {
             tvCounter?.text = (pos + 1).toString()
             tvTitle?.text = if (pos != listFragment.size) "Step ${pos + 1}" else "Review"
         }.attach()
+        databinding.viewpage2.post {
+//            databinding.viewpage2.offscreenPageLimit = 1
+//            databinding.viewpage2.currentItem = 2
+        }
+
+        databinding.viewpage2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+            }
+        })
 
         databinding.tablayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val tvCounter = tab?.customView?.findViewById<TextView>(R.id.tvCounter)
                 tvCounter?.isSelected = true
                 tvCounter?.setTextColor(resources.getColor(R.color.white))
-                viewmodel.updateCurrentTab(tab?.position?:0)
+                viewmodel.updateCurrentTab(tab?.position ?: 0)
 
-                if(tab?.position == 0) {
+                if (tab?.position == 0) {
 //                    databinding.tvPrevious.visibility = View.GONE
                 } else if (tab?.position == listFragment.size - 1) {
                     databinding.tvNext.text = "Submit"
                 } else {
                     databinding.tvPrevious.visibility = View.VISIBLE
                     databinding.tvNext.text = "Next"
+                }
+                tab?.position?.let {
+                    val fragmentToShow = adapter.getFragmentByPosition(it) as? FragmentLifecycle
+                    fragmentToShow?.onResumeFragment()
+
+                    val fragmentToHide =
+                        adapter.getFragmentByPosition(currentPosition) as? FragmentLifecycle
+                    fragmentToHide?.onPauseFragment()
+
+                    currentPosition = it
                 }
             }
 
@@ -95,6 +133,11 @@ class MainFragment : Fragment() {
             }
 
         })
+
+
+        databinding.viewpager1.adapter = adapter1
+        databinding.tablayout1.setupWithViewPager(databinding.viewpager1)
+        databinding.viewpager1.offscreenPageLimit = 1
     }
 
     private fun setUpEvent() {
@@ -102,7 +145,7 @@ class MainFragment : Fragment() {
             databinding.viewpage2.setCurrentItem(it, true)
         })
 
-        viewmodel.currentSong.observe(viewLifecycleOwner, Observer{
+        viewmodel.currentSong.observe(viewLifecycleOwner, Observer {
             Intent(requireContext(), MediaService::class.java).apply {
                 val bundle = Bundle()
                 bundle.putSerializable("NEW_SONG", viewmodel.listSong[it])
@@ -128,6 +171,11 @@ class MainFragment : Fragment() {
         } catch (e: Exception) {
             Log.e("Error", e.message.toString())
         }
+    }
+
+    private fun createID(): Int {
+        val now = Date()
+        return SimpleDateFormat("ddHHmmss", Locale.US).format(now).toInt()
     }
 
 }

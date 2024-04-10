@@ -9,17 +9,23 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentReviewBinding
+import com.example.myapplication.ui.FragmentLifecycle
 import com.example.myapplication.ui.main.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReviewFragment : Fragment() {
+class ReviewFragment : Fragment(), FragmentLifecycle {
     val viewmodel by viewModels<ReviewViewModel> ()
     lateinit var databinding : FragmentReviewBinding
     val parentViewmodel by viewModels<MainViewmodel>(ownerProducer = { requireParentFragment() })
     val mAdapter : ReviewAdapter by lazy {
         ReviewAdapter(requireContext())
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,5 +62,13 @@ class ReviewFragment : Fragment() {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+    }
+
+    override fun onResumeFragment() {
+//        databinding.rvDish.visibility = View.GONE
+    }
+
+    override fun onPauseFragment() {
+
     }
 }

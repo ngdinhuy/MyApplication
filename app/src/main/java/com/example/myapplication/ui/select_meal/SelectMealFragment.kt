@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.select_meal
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +12,25 @@ import com.example.myapplication.component.ClickButtonEvent
 import com.example.myapplication.component.DialogPicker
 import com.example.myapplication.databinding.FragmentReviewBinding
 import com.example.myapplication.databinding.FragmentSelectMealBinding
+import com.example.myapplication.ui.FragmentLifecycle
 import com.example.myapplication.ui.main.MainViewmodel
 import com.example.myapplication.ui.review.ReviewViewModel
 import com.example.myapplication.utils.Define
 import com.example.myapplication.utils.EventObserver
+import com.google.android.gms.common.api.internal.LifecycleFragment
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
-class SelectMealFragment : Fragment() {
+class SelectMealFragment : Fragment(), FragmentLifecycle {
     val viewmodel by viewModels<SelectMealViewModel> ()
     lateinit var databinding : FragmentSelectMealBinding
     val parentViewmodel by viewModels<MainViewmodel>(ownerProducer = { requireParentFragment()})
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,5 +64,11 @@ class SelectMealFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         databinding.root.requestLayout()
+    }
+
+    override fun onResumeFragment() {
+    }
+
+    override fun onPauseFragment() {
     }
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.select_restaurant
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,21 @@ import androidx.fragment.app.viewModels
 import com.example.myapplication.component.ClickButtonEvent
 import com.example.myapplication.component.DialogPicker
 import com.example.myapplication.databinding.FragmentSelectRestaurentBinding
+import com.example.myapplication.ui.FragmentLifecycle
 import com.example.myapplication.ui.main.MainViewmodel
 import com.example.myapplication.utils.EventObserver
+import com.google.android.gms.common.api.internal.LifecycleFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SelectRestaurantFragment : Fragment() {
+class SelectRestaurantFragment : Fragment(), FragmentLifecycle {
     val viewmodel by viewModels<SelectRestaurantViewModel>()
     lateinit var databinding: FragmentSelectRestaurentBinding
     val parentViewmodel by viewModels<MainViewmodel>(ownerProducer = { requireParentFragment() })
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +43,6 @@ class SelectRestaurantFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         viewmodel.eventClickSelectrestaurant.observe(viewLifecycleOwner, EventObserver {
             val dialog = DialogPicker().apply {
                 listCategory = it
@@ -53,5 +58,11 @@ class SelectRestaurantFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         databinding.root.requestLayout()
+    }
+
+    override fun onResumeFragment() {
+    }
+
+    override fun onPauseFragment() {
     }
 }

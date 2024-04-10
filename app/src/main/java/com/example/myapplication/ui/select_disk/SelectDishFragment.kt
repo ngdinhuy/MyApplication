@@ -13,6 +13,7 @@ import com.example.myapplication.component.ClickButtonEvent
 import com.example.myapplication.component.DialogPicker
 import com.example.myapplication.databinding.FragmentReviewBinding
 import com.example.myapplication.databinding.FragmentSelectDishBinding
+import com.example.myapplication.ui.FragmentLifecycle
 import com.example.myapplication.ui.main.MainViewmodel
 import com.example.myapplication.ui.review.ReviewViewModel
 import com.example.myapplication.utils.Define
@@ -21,7 +22,7 @@ import com.example.myapplication.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SelectDishFragment : Fragment() {
+class SelectDishFragment : Fragment(), FragmentLifecycle {
     val viewmodel by viewModels<SelectDishViewModel>()
     lateinit var databinding: FragmentSelectDishBinding
     val parentViewmodel by viewModels<MainViewmodel>(ownerProducer = { requireParentFragment() })
@@ -29,6 +30,11 @@ class SelectDishFragment : Fragment() {
         DishAdapter(requireContext())
     }
     var dialogPicker: DialogPicker? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +63,10 @@ class SelectDishFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         databinding.root.requestLayout()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     private fun setUpRecycleview() {
@@ -90,5 +100,12 @@ class SelectDishFragment : Fragment() {
             adapter = this@SelectDishFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+    }
+
+    override fun onResumeFragment() {
+        databinding.root.requestLayout()
+    }
+
+    override fun onPauseFragment() {
     }
 }
